@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Risk prediction | AttritionIQ{% endblock %}
+{% block breadcrumb %}Risk prediction{% endblock %}
+{% block page_heading %}Employee risk prediction{% endblock %}
+{% block page_subtitle %}Enter employee attributes to estimate an attrition risk score.{% endblock %}
+{% block content %}
+<div class="prediction-layout">
+  <section class="card form-card">
+    <div class="form-intro"><div class="form-intro-icon">✦</div><div><h2>Employee details</h2><p>Complete each field using the values available in the dataset.</p></div></div>
+    <form method="POST" action="{{ url_for('predict') }}" class="prediction-form" id="predictionForm">
+      <div class="form-grid">
+        <div class="form-field form-full"><label for="employee_label">Employee label (optional)</label><input id="employee_label" type="text" name="employee_label" maxlength="100" placeholder="e.g. Employee 001"></div>
+        {% for field in fields %}
+        <div class="form-field">
+          <label for="field_{{ loop.index }}">{{ field.label|title }}</label>
+          {% if field.kind == 'select' %}
+            <select id="field_{{ loop.index }}" name="{{ field.name }}" required>
+              {% for option in field.options %}<option value="{{ option }}" {% if option == field.default %}selected{% endif %}>{{ option }}</option>{% endfor %}
+            </select>
+          {% else %}
+            <input id="field_{{ loop.index }}" type="number" name="{{ field.name }}" value="{{ field.default }}" step="any" required>
+          {% endif %}
+        </div>
+        {% else %}
+        <div class="notice notice-warning form-full"><strong>No prediction fields available</strong><p>The backend did not provide any valid model feature fields. Check <code>model/model_info.json</code> and the dataset columns.</p></div>
+        {% endfor %}
+      </div>
+      <div class="form-actions"><p><span class="status-dot"></span> Fields are validated before prediction.</p><button class="btn btn-primary btn-large" type="submit">Generate risk assessment <span>→</span></button></div>
+    </form>
+  </section>
+  <aside class="prediction-side"><div class="card side-info-card"><div class="side-info-icon blue">◎</div><h3>What you'll get</h3><p>A probability estimate and risk category based on the model's learned patterns.</p><div class="side-divider"></div><div class="side-info-icon green">✓</div><h3>Use responsibly</h3><p>Review results with relevant context. Do not use automated predictions as the sole basis for employment decisions.</p></div><div class="side-note"><strong>Privacy reminder</strong><p>Only enter employee information you are authorized to process. Avoid direct identifiers unless necessary.</p></div></aside>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Prediction history | AttritionIQ{% endblock %}
+{% block breadcrumb %}Prediction history{% endblock %}
+{% block page_heading %}Prediction history{% endblock %}
+{% block page_subtitle %}Review previous risk assessments and export records for further analysis.{% endblock %}
+{% block heading_action %}<a class="btn btn-primary" href="{{ url_for('predict') }}"><span>＋</span> New prediction</a>{% endblock %}
+{% block content %}
+<section class="card table-card"><div class="card-heading table-card-heading"><div><h2>Saved assessments</h2><p>{{ records|length if records else 0 }} saved record(s)</p></div><div class="table-actions"><a class="btn btn-secondary btn-small" href="{{ url_for('export_history') }}">↓ Export CSV</a></div></div>
+{% if records %}<div class="table-scroll"><table class="data-table"><thead><tr><th>Employee / ID</th><th>Department</th><th>Date</th><th>Risk probability</th><th>Risk level</th><th>Prediction</th></tr></thead><tbody>
+{% for item in records %}<tr><td><div class="employee-cell"><span class="table-avatar">{{ (item.employee_label|default('E')|string)[:1]|upper }}</span><div><strong>{{ item.employee_label|default('Employee') }}</strong><small>Record #{{ item.id }}</small></div></div></td><td>{{ item.department|default('—') }}</td><td>{{ item.created_at|default('—') }}</td><td><div class="table-probability"><span>{{ (item.probability|float * 100)|round(1) }}%</span><div class="mini-track"><span style="width: {{ [([item.probability|float * 100, 0]|max), 100]|min }}%"></span></div></div></td><td><span class="risk-chip {{ item.risk_level|default('Low')|lower }}">{{ item.risk_level|default('Low') }}</span></td><td>{{ item.prediction|default('—') }}</td></tr>{% endfor %}
+</tbody></table></div><div class="table-footer"><span>Keep records secure and share only with authorized people.</span><form method="POST" action="{{ url_for('clear_history') }}" data-confirm="Clear all saved prediction history? This cannot be undone."><button class="btn btn-danger-quiet btn-small" type="submit">Clear history</button></form></div>
+{% else %}<div class="empty-state"><span class="empty-icon">◷</span><strong>No saved predictions yet</strong><p>Once you run a prediction, its record will appear here.</p><a class="btn btn-primary" href="{{ url_for('predict') }}">Create a prediction</a></div>{% endif %}
+</section>
+{% endblock %}

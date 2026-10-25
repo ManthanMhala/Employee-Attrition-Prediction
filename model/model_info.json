@@ -1,0 +1,47 @@
+{
+    "best_model": "Logistic Regression",
+    "features": [
+        "Age",
+        "BusinessTravel",
+        "DailyRate",
+        "Department",
+        "DistanceFromHome",
+        "Education",
+        "EducationField",
+        "EnvironmentSatisfaction",
+        "Gender",
+        "HourlyRate",
+        "JobInvolvement",
+        "JobLevel",
+        "JobRole",
+        "JobSatisfaction",
+        "MaritalStatus",
+        "MonthlyIncome",
+        "MonthlyRate",
+        "NumCompaniesWorked",
+        "OverTime",
+        "PercentSalaryHike",
+        "PerformanceRating",
+        "RelationshipSatisfaction",
+        "StockOptionLevel",
+        "TotalWorkingYears",
+        "TrainingTimesLastYear",
+        "WorkLifeBalance",
+        "YearsAtCompany",
+        "YearsInCurrentRole",
+        "YearsSinceLastPromotion",
+        "YearsWithCurrManager"
+    ],
+    "metrics": [
+        {
+            "model": "Logistic Regression",
+            "accuracy": 0.7517,
+            "roc_auc": 0.8032
+        },
+        {
+            "model": "Random Forest",
+            "accuracy": 0.8469,
+            "roc_auc": 0.7832
+        }
+    ]
+}

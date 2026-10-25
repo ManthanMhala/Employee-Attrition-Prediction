@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | AttritionIQ{% endblock %}
+{% block breadcrumb %}Dashboard{% endblock %}
+{% block page_heading %}Workforce overview{% endblock %}
+{% block page_subtitle %}A clear view of workforce composition, attrition patterns, and recent predictions.{% endblock %}
+{% block heading_action %}<a class="btn btn-primary" href="{{ url_for('predict') }}"><span>＋</span> New prediction</a>{% endblock %}
+{% block content %}
+{% if setup_error %}
+<div class="notice notice-warning"><strong>Setup required</strong><p>{{ setup_error if setup_error is string else 'The dataset or trained model could not be loaded. Check the terminal for the startup notice.' }}</p></div>
+{% else %}
+<div class="metric-grid">
+  <article class="metric-card"><div class="metric-top"><span class="metric-label">Total employees</span><span class="metric-icon icon-blue">♙</span></div><div class="metric-value">{{ employee_count|default(0) }}</div><div class="metric-foot">Employees in the loaded dataset</div></article>
+  <article class="metric-card"><div class="metric-top"><span class="metric-label">Attrition cases</span><span class="metric-icon icon-rose">↗</span></div><div class="metric-value">{{ attrition_count|default(0) }}</div><div class="metric-foot">Recorded attrition in the dataset</div></article>
+  <article class="metric-card"><div class="metric-top"><span class="metric-label">Attrition rate</span><span class="metric-icon icon-amber">％</span></div><div class="metric-value">{{ attrition_rate|default(0)|round(1) }}<span class="metric-unit">%</span></div><div class="metric-foot">Share of employees who left</div></article>
+  <article class="metric-card"><div class="metric-top"><span class="metric-label">High-risk predictions</span><span class="metric-icon icon-green">⌁</span></div><div class="metric-value">{{ high_risk|default(0) }}</div><div class="metric-foot">From saved prediction history</div></article>
+</div>
+<div class="content-grid dashboard-grid">
+  <section class="card chart-card chart-card-wide"><div class="card-heading"><div><h2>Attrition by department</h2><p>Compare historical attrition rates across teams.</p></div><span class="card-tag">Dataset</span></div>{% if dept_chart %}<div class="chart-container">{{ dept_chart|safe }}</div>{% else %}<div class="empty-state"><span class="empty-icon">▥</span><strong>No chart available</strong><p>Department data will appear here when available.</p></div>{% endif %}</section>
+  <section class="card activity-card"><div class="card-heading"><div><h2>Recent predictions</h2><p>Latest employee risk assessments.</p></div><a class="text-link" href="{{ url_for('history') }}">View all →</a></div>
+  {% if recent %}<div class="activity-list">{% for item in recent %}<div class="activity-row"><div class="activity-avatar">{{ (item.employee_label|default('Employee')|string)[:1]|upper }}</div><div class="activity-info"><strong>{{ item.employee_label|default('Employee') }}</strong><span>{{ item.created_at|default('Recent') }}</span></div><span class="risk-chip {{ item.risk_level|default('Low')|lower }}">{{ item.risk_level|default('Low') }}</span></div>{% endfor %}</div>
+  {% else %}<div class="empty-state compact"><span class="empty-icon">◷</span><strong>No predictions yet</strong><p>Your saved predictions will show here.</p><a class="text-link" href="{{ url_for('predict') }}">Run first prediction →</a></div>{% endif %}
+  </section>
+</div>
+<section class="insight-banner"><div class="insight-symbol">✧</div><div><strong>Turn signals into supportive action</strong><p>Predictions estimate patterns in historical data. Review context with employees and avoid using a score as the sole basis for employment decisions.</p></div><a href="{{ url_for('analytics') }}" class="text-link">Explore analytics →</a></section>
+{% endif %}
+{% endblock %}

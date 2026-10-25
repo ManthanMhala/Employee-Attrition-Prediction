@@ -1,0 +1,20 @@
+
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.vscode/
+
+# Local prediction history
+prediction_history.db
+prediction_history.db-journal
+
+# Generated model artifacts
+model/*.pkl
+
+# Dataset may contain sensitive employee information
+dataset/*.csv
+
+# Notebook temporary files
+.ipynb_checkpoints/

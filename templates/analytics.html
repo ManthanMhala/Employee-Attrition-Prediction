@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Analytics | AttritionIQ{% endblock %}
+{% block breadcrumb %}Analytics{% endblock %}
+{% block page_heading %}Workforce analytics{% endblock %}
+{% block page_subtitle %}Explore the patterns behind employee attrition across key workforce dimensions.{% endblock %}
+{% block content %}
+{% if setup_error %}
+  <div class="notice notice-warning"><strong>Setup required</strong><p>{{ setup_error }}</p></div>
+{% else %}
+  <div class="analytics-note"><span class="note-icon">ⓘ</span><p>These charts describe historical patterns in the dataset; they do not establish why an individual employee may leave.</p></div>
+  <div class="analytics-grid">
+    <section class="card chart-card"><div class="card-heading"><div><h2>Attrition by department</h2><p>Department-level distribution</p></div><span class="card-tag">01</span></div>{% if department_chart %}<div class="chart-container">{{ department_chart|safe }}</div>{% else %}<div class="empty-state compact">Department chart is not available.</div>{% endif %}</section>
+    <section class="card chart-card"><div class="card-heading"><div><h2>Overtime and attrition</h2><p>Compare employees by overtime status</p></div><span class="card-tag">02</span></div>{% if overtime_chart %}<div class="chart-container">{{ overtime_chart|safe }}</div>{% else %}<div class="empty-state compact">Overtime chart is not available.</div>{% endif %}</section>
+    <section class="card chart-card chart-card-wide"><div class="card-heading"><div><h2>Job satisfaction and attrition</h2><p>Explore satisfaction levels in the dataset</p></div><span class="card-tag">03</span></div>{% if satisfaction_chart %}<div class="chart-container">{{ satisfaction_chart|safe }}</div>{% else %}<div class="empty-state compact">Satisfaction chart is not available.</div>{% endif %}</section>
+  </div>
+  <section class="card analytics-insights"><div class="section-icon">✧</div><div><h2>How to read these insights</h2><p>Look for differences between groups, then validate them with additional evidence. Correlation in workforce data is not proof of causation, and group-level trends should not be assumed to describe any one employee.</p></div></section>
+{% endif %}
+{% endblock %}

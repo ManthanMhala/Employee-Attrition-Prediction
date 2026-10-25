@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Prediction result | AttritionIQ{% endblock %}
+{% block breadcrumb %}Prediction result{% endblock %}
+{% block page_heading %}Prediction result{% endblock %}
+{% block page_subtitle %}Review the model estimate alongside relevant context.{% endblock %}
+{% block content %}
+{% set shown_level = risk_level|default('Unknown') %}
+{% set probability_value = probability|default(0)|float %}
+{% set risk_class = shown_level|string|lower|replace(' ', '-') %}
+<div class="result-layout">
+  <section class="card result-card">
+    <div class="result-status"><span class="result-check">✓</span><span>Assessment complete</span></div>
+    <div class="result-label">Employee</div><h2>{{ employee_label|default('Employee') }}</h2>
+    <div class="result-label">Department</div><p>{{ department|default('Unknown') }}</p>
+    <div class="result-label">Estimated attrition risk</div><div class="result-risk {{ risk_class }}">{{ shown_level }}</div>
+    <div class="probability-wrap"><div class="probability-heading"><span>Model probability</span><strong>{{ probability_value|round(1) }}%</strong></div><div class="progress-track"><div class="progress-fill {{ risk_class }}" style="width: {{ [([probability_value, 0]|max), 100]|min }}%"></div></div><div class="progress-scale"><span>0%</span><span>50%</span><span>100%</span></div></div>
+    <div class="result-disclaimer"><span>ⓘ</span><p>This is a model estimate, not a certainty or judgment about an employee. Confirm data quality and consider additional context before taking action.</p></div>
+    <div class="result-actions"><a class="btn btn-primary" href="{{ url_for('predict') }}">New prediction</a><a class="btn btn-secondary" href="{{ url_for('history') }}">View history</a><a class="text-link" href="{{ url_for('analytics') }}">Open analytics →</a></div>
+  </section>
+  <aside class="card result-side"><div class="side-info-icon blue">✧</div><h3>Suggested next steps</h3><ul class="next-steps"><li><span>1</span><div><strong>Validate the inputs</strong><p>Check for missing, outdated, or incorrectly entered values.</p></div></li><li><span>2</span><div><strong>Review the context</strong><p>Use a fair, supportive conversation to understand concerns.</p></div></li><li><span>3</span><div><strong>Track patterns responsibly</strong><p>Use aggregate trends to guide further investigation.</p></div></li></ul></aside>
+</div>
+{% endblock %}
