@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # AttritionIQ — Employee Attrition Prediction
 
@@ -61,3 +62,6 @@ training and prediction.
 Predictions are estimates based on historical patterns, not certain
 forecasts. Do not use them as the sole basis for employment decisions.
 Protect employee data and review potential bias before real-world use.
+=======
+# Employee-Attrition-Prediction
+>>>>>>> 5ae4ea5c1dcc6b3d8e8daa61864526045ec3006e
